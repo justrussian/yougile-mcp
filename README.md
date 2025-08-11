@@ -21,7 +21,7 @@ MCP сервер для интеграции с YouGile. Работает с л�
 
 ### 1. Скачайте проект
 ```bash
-git clone <repo-url>
+git clone https://github.com/justrussian/yougile-mcp.git
 cd yougile-mcp
 ```
 
