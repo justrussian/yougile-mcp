@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "yougile": {
+      "command": "python",
+      "args": ["src/server.py"],
+      "cwd": "/path/to/your/yougile-mcp",
+      "env": {
+        "PATH": "/path/to/your/yougile-mcp/venv/bin:$PATH",
+        "YOUGILE_BASE_URL": "https://yougile.com",
+        "YOUGILE_EMAIL": "your-email@yougile.com",
+        "YOUGILE_PASSWORD": "your-password",
+        "YOUGILE_COMPANY_ID": "00000000-0000-0000-0000-000000000000",
+        "YOUGILE_API_KEY": "your-api-key-will-be-auto-generated",
+        "YOUGILE_USER_CONTEXT": "Default project and board setup instructions for your workflow"
+      }
+    }
+  }
+}
