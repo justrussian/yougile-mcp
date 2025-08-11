@@ -270,7 +270,7 @@ async def get_tasks_by_date(assigned_to: str = None, created_by: str = None, tar
     return await get_tasks_by_date_tool(assigned_to, created_by, target_date, completed_only, limit, ctx)
 
 @mcp.tool()
-async def update_task(task_id: str, title: str = None, description: str = None, column_id: str = None, assigned_users: list = None, deadline: dict = None, time_tracking: dict = None, stickers: dict = None, checklists: list = None, completed: bool = None, archived: bool = None, deleted: bool = None, ctx: Context = None) -> dict:
+async def update_task(task_id: str, title: str = None, description: str = None, column_id: str = None, assigned_users: list = None, deadline: dict = None, time_tracking: dict = None, stickers: dict = None, subtasks: list = None, checklists: list = None, completed: bool = None, archived: bool = None, deleted: bool = None, ctx: Context = None) -> dict:
     """Update task information.
     
     🚨 CRITICAL: description parameter MUST be in HTML format!
@@ -279,7 +279,7 @@ async def update_task(task_id: str, title: str = None, description: str = None, 
     - Example: "Updated requirements<br><br><b>Changes:</b><br>• Added validation<br>• Fixed bugs"
     - Plain text will display incorrectly in YouGile interface!
     """
-    return await update_task_tool(task_id, title, description, column_id, assigned_users, deadline, time_tracking, stickers, checklists, completed, archived, deleted, ctx)
+    return await update_task_tool(task_id, title, description, column_id, assigned_users, deadline, time_tracking, stickers, subtasks, checklists, completed, archived, deleted, ctx)
 
 @mcp.tool()  
 async def delete_task(task_id: str, ctx: Context = None) -> dict:

@@ -22,6 +22,7 @@ async def update_task_tool(
     deadline: Dict[str, Any] = None,
     time_tracking: Dict[str, Any] = None,
     stickers: Dict[str, str] = None,
+    subtasks: List[str] = None,
     checklists: List[Dict[str, Any]] = None,
     completed: bool = None,
     archived: bool = None,
@@ -39,6 +40,7 @@ async def update_task_tool(
         deadline: Deadline sticker data (dict with deadline, startDate, withTime fields)
         time_tracking: Time tracking sticker data (dict with plan, work fields)
         stickers: Custom stickers (dict of sticker_id -> state_id)
+        subtasks: List of subtask IDs to assign to this task
         checklists: List of checklist groups (dict with title and items: [{"title": "Item", "isCompleted": false}])
         completed: Mark task as completed (True) or not completed (False)
         archived: Archive task (True) or unarchive (False)
@@ -77,6 +79,10 @@ async def update_task_tool(
             
         if stickers is not None:
             task_data["stickers"] = stickers
+            
+        if subtasks is not None:
+            subtasks = [validate_uuid(subtask_id, "subtask_id") for subtask_id in subtasks]
+            task_data["subtasks"] = subtasks
             
         if checklists is not None:
             # Validate checklist structure
