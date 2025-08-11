@@ -27,7 +27,7 @@ async def list_projects_tool(ctx: Context) -> List[models.Project]:
             
         project_list = [models.Project(**project) for project in result]
         
-        await ctx.info(f" Successfully retrieved {len(project_list)} projects")
+        await ctx.info(f"Successfully retrieved {len(project_list)} projects")
         return project_list
         
     except YouGileError as e:
@@ -99,7 +99,7 @@ async def get_project_tool(project_id: str, ctx: Context) -> models.Project:
             
         project = models.Project(**result)
         
-        await ctx.info(f" Successfully retrieved project: {project.title}")
+        await ctx.info(f"Successfully retrieved project: {project.title}")
         return project
         
     except ValidationError as e:
@@ -158,7 +158,7 @@ async def update_project_tool(
             
         project = models.Project(**result)
         
-        await ctx.info(f" Successfully updated project: {project.title}")
+        await ctx.info(f"Successfully updated project: {project.title}")
         return project
         
     except ValidationError as e:

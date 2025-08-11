@@ -52,7 +52,7 @@ async def list_boards_tool(
             
         board_list = [models.Board(**board) for board in result]
         
-        await ctx.info(f" Successfully retrieved {len(board_list)} boards")
+        await ctx.info(f"Successfully retrieved {len(board_list)} boards")
         return board_list
         
     except ValidationError as e:
@@ -120,7 +120,7 @@ async def get_board_tool(board_id: str, ctx: Context) -> models.Board:
             
         board = models.Board(**result)
         
-        await ctx.info(f" Successfully retrieved board: {board.title}")
+        await ctx.info(f"Successfully retrieved board: {board.title}")
         return board
         
     except ValidationError as e:
@@ -169,7 +169,7 @@ async def update_board_tool(
             
         board = models.Board(**result)
         
-        await ctx.info(f" Successfully updated board: {board.title}")
+        await ctx.info(f"Successfully updated board: {board.title}")
         return board
         
     except ValidationError as e:

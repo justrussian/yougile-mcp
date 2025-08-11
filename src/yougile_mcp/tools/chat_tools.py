@@ -22,7 +22,7 @@ async def list_group_chats_tool(ctx: Context) -> List[Dict[str, Any]]:
         async with YouGileClient(auth.auth_manager) as client:
             result = await chats.get_group_chats(client)
             
-        await ctx.info(f" Successfully retrieved {len(result)} group chats")
+        await ctx.info(f"Successfully retrieved {len(result)} group chats")
         return result
         
     except YouGileError as e:
@@ -56,7 +56,7 @@ async def create_group_chat_tool(
         async with YouGileClient(auth.auth_manager) as client:
             result = await chats.create_group_chat(client, chat_data)
             
-        await ctx.info(f" Successfully created group chat with ID: {result.get('id')}")
+        await ctx.info(f"Successfully created group chat with ID: {result.get('id')}")
         return result
         
     except ValidationError as e:
@@ -80,7 +80,7 @@ async def get_group_chat_tool(chat_id: str, ctx: Context) -> Dict[str, Any]:
         async with YouGileClient(auth.auth_manager) as client:
             result = await chats.get_group_chat(client, chat_id)
             
-        await ctx.info(f" Successfully retrieved group chat: {result.get('title', chat_id)}")
+        await ctx.info(f"Successfully retrieved group chat: {result.get('title', chat_id)}")
         return result
         
     except ValidationError as e:
@@ -118,7 +118,7 @@ async def get_chat_messages_tool(
         if limit and len(result) > limit:
             result = result[-limit:]  # Get latest messages
             
-        await ctx.info(f" Successfully retrieved {len(result)} messages")
+        await ctx.info(f"Successfully retrieved {len(result)} messages")
         return result
         
     except ValidationError as e:
@@ -159,7 +159,7 @@ async def send_chat_message_tool(
         async with YouGileClient(auth.auth_manager) as client:
             result = await chats.send_chat_message(client, chat_id, message_data)
             
-        await ctx.info(f" Successfully sent message with ID: {result.get('id')}")
+        await ctx.info(f"Successfully sent message with ID: {result.get('id')}")
         return result
         
     except ValidationError as e:
@@ -188,7 +188,7 @@ async def get_chat_message_tool(
         async with YouGileClient(auth.auth_manager) as client:
             result = await chats.get_chat_message(client, chat_id, message_id)
             
-        await ctx.info(f" Successfully retrieved message")
+        await ctx.info(f"Successfully retrieved message")
         return result
         
     except ValidationError as e:
@@ -226,7 +226,7 @@ async def update_chat_message_tool(
         async with YouGileClient(auth.auth_manager) as client:
             result = await chats.update_chat_message(client, chat_id, message_id, message_data)
             
-        await ctx.info(f" Successfully updated message")
+        await ctx.info(f"Successfully updated message")
         return result
         
     except ValidationError as e:

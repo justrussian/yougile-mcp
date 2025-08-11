@@ -30,7 +30,7 @@ async def list_string_stickers_tool(
         sticker_list = result.get("content", [])
         
         if ctx:
-            await ctx.info(f" Successfully retrieved {len(sticker_list)} string stickers")
+            await ctx.info(f"Successfully retrieved {len(sticker_list)} string stickers")
         return sticker_list
         
     except YouGileError as e:
@@ -55,7 +55,7 @@ async def get_string_sticker_tool(sticker_id: str, ctx: Context = None) -> Dict[
             result = await stickers.get_string_sticker(client, sticker_id)
             
         if ctx:
-            await ctx.info(f" Successfully retrieved sticker: {result.get('name', sticker_id)}")
+            await ctx.info(f"Successfully retrieved sticker: {result.get('name', sticker_id)}")
         return result
         
     except ValidationError as e:
@@ -92,7 +92,7 @@ async def get_string_sticker_state_tool(
             result = await stickers.get_string_sticker_state(client, sticker_id, state_id)
             
         if ctx:
-            await ctx.info(f" Successfully retrieved sticker state: {result.get('name', state_id)}")
+            await ctx.info(f"Successfully retrieved sticker state: {result.get('name', state_id)}")
         return result
         
     except ValidationError as e:
@@ -151,7 +151,7 @@ async def decode_task_stickers_tool(
                     }
         
         if ctx:
-            await ctx.info(f" Successfully decoded {len(decoded_stickers)} stickers")
+            await ctx.info(f"Successfully decoded {len(decoded_stickers)} stickers")
         return decoded_stickers
         
     except Exception as e:

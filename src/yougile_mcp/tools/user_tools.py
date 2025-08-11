@@ -23,7 +23,7 @@ async def list_users_tool(ctx: Context) -> List[models.User]:
             
         user_list = [models.User(**user) for user in result]
         
-        await ctx.info(f" Successfully retrieved {len(user_list)} users")
+        await ctx.info(f"Successfully retrieved {len(user_list)} users")
         return user_list
         
     except YouGileError as e:
@@ -69,7 +69,7 @@ async def invite_user_tool(
             
         user = models.User(**result)
         
-        await ctx.info(f" Successfully invited user: {email}")
+        await ctx.info(f"Successfully invited user: {email}")
         return user
         
     except ValidationError as e:
@@ -95,7 +95,7 @@ async def get_user_tool(user_id: str, ctx: Context) -> models.User:
             
         user = models.User(**result)
         
-        await ctx.info(f" Successfully retrieved user: {user.real_name}")
+        await ctx.info(f"Successfully retrieved user: {user.real_name}")
         return user
         
     except ValidationError as e:
@@ -163,7 +163,7 @@ async def update_user_tool(
             
         user = models.User(**result)
         
-        await ctx.info(f" Successfully updated user: {user.real_name}")
+        await ctx.info(f"Successfully updated user: {user.real_name}")
         return user
         
     except ValidationError as e:
@@ -187,7 +187,7 @@ async def remove_user_tool(user_id: str, ctx: Context) -> Dict[str, Any]:
         async with YouGileClient(auth.auth_manager) as client:
             result = await users.delete_user(client, user_id)
             
-        await ctx.info(f" Successfully removed user: {user_id}")
+        await ctx.info(f"Successfully removed user: {user_id}")
         return {"success": True, "message": "User removed successfully", "user_id": user_id}
         
     except ValidationError as e:
