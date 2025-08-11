@@ -25,12 +25,18 @@ git clone <repo-url>
 cd yougile-mcp
 ```
 
-### 2. Установите зависимости
+### 2. Создайте виртуальное окружение
+```bash
+python -m venv venv
+source venv/bin/activate  # На Windows: venv\Scripts\activate
+```
+
+### 3. Установите зависимости
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Получите данные YouGile
+### 4. Получите данные YouGile
 
 **Найдите свой email и пароль YouGile** - те же, что используете для входа на сайт.
 
@@ -41,7 +47,7 @@ pip install -r requirements.txt
 4. Нажмите на иконку информации (ℹ️) справа от названия вашей компании
 5. Скопируйте ID компании из открывшегося окна
 
-### 4. Настройте конфигурацию
+### 5. Настройте конфигурацию
 ```bash
 cp .env.example .env
 ```
@@ -53,7 +59,7 @@ YOUGILE_PASSWORD=ваш-пароль-от-yougile
 YOUGILE_COMPANY_ID=ваш-company-id-из-url
 ```
 
-### 5. Подключите к AI помощнику
+### 6. Подключите к AI помощнику
 
 **Для Claude Desktop - Автоматическая установка:**
 ```bash
@@ -73,9 +79,11 @@ cp mcp_config.json.example mcp_config.json
   "mcpServers": {
     "yougile": {
       "command": "python",
-      "args": ["run_server.py"],
+      "args": ["/полный/путь/к/папке/yougile-mcp/run_server.py"],
       "cwd": "/полный/путь/к/папке/yougile-mcp",
       "env": {
+        "PATH": "/полный/путь/к/папке/yougile-mcp/venv/bin:$PATH",
+        "YOUGILE_BASE_URL": "https://yougile.com",
         "YOUGILE_EMAIL": "ваш-email@yougile.com",
         "YOUGILE_PASSWORD": "ваш-пароль",
         "YOUGILE_COMPANY_ID": "ваш-company-id"
@@ -110,11 +118,16 @@ cp mcp_config.json.example mcp_config.json
 
 ### Проверка работы сервера
 ```bash
+# Убедитесь что виртуальное окружение активировано
+source venv/bin/activate  # На Windows: venv\Scripts\activate
+
 python run_server.py
 ```
 Должно показать: "🔑 Initializing YouGile authentication..." и подключиться к API.
 
 ### Частые ошибки
+
+**"No module named 'mcp'"** - не активировано виртуальное окружение. Выполните `source venv/bin/activate`
 
 **"No module named 'src'"** - запускайте через `python run_server.py`, не напрямую `src/server.py`
 
