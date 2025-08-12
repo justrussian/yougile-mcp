@@ -248,6 +248,11 @@ async def create_task(title: str, column_id: str, description: str = None, assig
     - Use <b>text</b> for bold, <i>text</i> for italic
     - Example: "Fix bug<br><br><b>Steps:</b><br>1. Check login<br>2. Fix error"
     - Plain text will display incorrectly in YouGile interface!
+    
+    📋 Checklists format:
+    - Structure: [{"title": "Checklist Name", "items": [{"title": "Item 1", "isCompleted": false}]}]
+    - Multiple checklists: [{"title": "Backend", "items": [...]}, {"title": "Frontend", "items": [...]}]
+    - Each item MUST have "isCompleted" field (boolean)
     """
     return await create_task_tool(title, column_id, description, assigned_users, deadline, time_tracking, stickers, subtasks, checklists, completed, archived, ctx)
 
@@ -278,6 +283,11 @@ async def update_task(task_id: str, title: str = None, description: str = None, 
     - Use <b>text</b> for bold, <i>text</i> for italic
     - Example: "Updated requirements<br><br><b>Changes:</b><br>• Added validation<br>• Fixed bugs"
     - Plain text will display incorrectly in YouGile interface!
+    
+    📋 Checklists format:
+    - Structure: [{"title": "Checklist Name", "items": [{"title": "Item 1", "isCompleted": false}]}]
+    - Multiple checklists: [{"title": "Backend", "items": [...]}, {"title": "Frontend", "items": [...]}]
+    - Each item MUST have "isCompleted" field (boolean)
     """
     return await update_task_tool(task_id, title, description, column_id, assigned_users, deadline, time_tracking, stickers, subtasks, checklists, completed, archived, deleted, ctx)
 

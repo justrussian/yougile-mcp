@@ -187,6 +187,11 @@ async def create_task_tool(
                     if not isinstance(item, dict) or "title" not in item:
                         raise ValidationError("Each checklist item must have a 'title' field")
                     validate_non_empty_string(item["title"], "checklist item title")
+                    # Ensure isCompleted field exists and is boolean
+                    if "isCompleted" not in item:
+                        item["isCompleted"] = False
+                    elif not isinstance(item["isCompleted"], bool):
+                        raise ValidationError("Checklist item 'isCompleted' must be a boolean")
             task_data["checklists"] = checklists
             
         if completed is not None:
