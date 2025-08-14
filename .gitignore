@@ -148,3 +148,5 @@ logs/
 # MCP specific
 .claude/
 mcp_config.json
+
+# YouGile MCP credentials

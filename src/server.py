@@ -540,31 +540,31 @@ def api_usage_guide():
 async def initialize_auth():
     """Initialize authentication automatically from environment variables."""
     if not all([settings.yougile_email, settings.yougile_password, settings.yougile_company_id]):
-        print("⚠️  YouGile credentials not configured in .env file")
-        print("Add YOUGILE_EMAIL, YOUGILE_PASSWORD, YOUGILE_COMPANY_ID to .env")
         return False
     
     try:
-        print("🔑 Initializing YouGile authentication...")
+        # First try API key from environment (MCP config)
+        api_key_to_test = settings.yougile_api_key
         
-        # Check if we already have a valid API key
-        if settings.yougile_api_key:
-            print("📝 Found existing API key, testing...")
+        # If no API key in environment, try loading from credentials file
+        if not api_key_to_test:
+            api_key_to_test = load_api_key_from_credentials()
+        
+        # Test existing API key if we have one
+        if api_key_to_test:
             try:
                 # Test existing key
-                auth.auth_manager.set_credentials(settings.yougile_api_key, settings.yougile_company_id)
+                auth.auth_manager.set_credentials(api_key_to_test, settings.yougile_company_id)
                 async with YouGileClient(auth.auth_manager) as client:
                     # Test key with a simple API call (get users)
                     await client.get("/users")
                 
-                print("✅ Existing API key is valid, using it")
                 return True
                 
-            except Exception as e:
-                print(f"⚠️  Existing API key invalid ({e}), creating new one...")
+            except Exception:
+                pass
         
         # Create new API key
-        print("🔄 Creating new API key...")
         temp_auth = auth.auth_manager.__class__()
         async with YouGileClient(temp_auth) as client:
             api_key = await auth_api.create_api_key(
@@ -577,49 +577,76 @@ async def initialize_auth():
             # Save to global auth manager
             auth.auth_manager.set_credentials(api_key, settings.yougile_company_id)
             
-            # Save API key to .env file for future use
-            await save_api_key_to_env(api_key)
+            # Save API key to credentials file for future use
+            await save_api_key_to_credentials(api_key)
             
-        print("✅ New API key created and saved successfully")
         return True
         
-    except Exception as e:
-        print(f"❌ Failed to initialize authentication: {e}")
+    except Exception:
         return False
 
-async def save_api_key_to_env(api_key: str):
-    """Save API key to .env file for future reuse."""
+async def save_api_key_to_credentials(api_key: str):
+    """Save API key to credentials file for future reuse."""
+    import json
     import os
+    import tempfile
     from pathlib import Path
     
-    env_file = Path(".env")
-    if not env_file.exists():
-        return
+    # Save to temp directory to avoid read-only filesystem issues
+    temp_dir = Path(tempfile.gettempdir())
+    credentials_file = temp_dir / "yougile_credentials.json"
     
     try:
-        # Read current .env content
-        with open(env_file, 'r') as f:
-            lines = f.readlines()
+        # Load existing credentials or create new
+        credentials = {}
+        if credentials_file.exists():
+            with open(credentials_file, 'r') as f:
+                credentials = json.load(f)
         
-        # Update or add API key line
-        updated = False
-        for i, line in enumerate(lines):
-            if line.startswith('YOUGILE_API_KEY=') or line.startswith('# YOUGILE_API_KEY='):
-                lines[i] = f"YOUGILE_API_KEY={api_key}\n"
-                updated = True
-                break
+        # Update API key for current company  
+        import time
+        credentials[settings.yougile_company_id] = {
+            "api_key": api_key,
+            "created_at": str(int(time.time()))
+        }
         
-        if not updated:
-            lines.append(f"\nYOUGILE_API_KEY={api_key}\n")
+        # Save to credentials file
+        with open(credentials_file, 'w') as f:
+            json.dump(credentials, f, indent=2)
         
-        # Write back to .env
-        with open(env_file, 'w') as f:
-            f.writelines(lines)
-            
-        print("💾 API key saved to .env file for future use")
+        # Set file permissions to be readable only by owner (Unix-like systems)
+        try:
+            os.chmod(credentials_file, 0o600)
+        except (OSError, AttributeError):
+            pass  # Windows or other systems that don't support chmod
         
-    except Exception as e:
-        print(f"⚠️  Could not save API key to .env: {e}")
+    except Exception:
+        pass
+
+
+def load_api_key_from_credentials() -> str:
+    """Load API key from credentials file."""
+    import json
+    import tempfile
+    from pathlib import Path
+    
+    # Load from temp directory
+    temp_dir = Path(tempfile.gettempdir())
+    credentials_file = temp_dir / "yougile_credentials.json"
+    
+    if not credentials_file.exists():
+        return None
+    
+    try:
+        with open(credentials_file, 'r') as f:
+            credentials = json.load(f)
+        
+        company_data = credentials.get(settings.yougile_company_id, {})
+        api_key = company_data.get("api_key")
+        return api_key
+        
+    except Exception:
+        return None
 
 def main():
     """Main entry point for the server."""
