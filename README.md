@@ -1,3 +1,5 @@
+[![MSeeP.ai Security Assessment Badge](https://mseep.net/pr/justrussian-yougile-mcp-badge.png)](https://mseep.ai/app/justrussian-yougile-mcp)
+
 # YouGile MCP Server
 
 MCP сервер для интеграции с YouGile. Работает с любыми AI помощниками, поддерживающими протокол MCP (Claude Desktop, Continue, Cline и другие). Позволяет AI работать с вашими проектами, задачами и командой в YouGile.
